@@ -40,33 +40,47 @@ export default {
 
 <template>
   <ul v-if="this.item.poster_path">
-    <li>
+    <li class="poster">
       <img class="logo" :src="buildImageUrl" :alt="this.title" />
-    </li>
-    <li>{{ this.title }}</li>
-    <li>{{ this.originalTitle }}</li>
-    <li>
-      <img
-        class="flag"
-        v-if="hasFlag"
-        :src="flagSrc"
-        :alt="item.original_language"
-      />
-      <div v-else>{{ item.original_language }}</div>
-    </li>
-    <li>
-      <i
-        v-if="this.roundVote"
-        v-for="fullStar in this.roundVote"
-        :key="fullStar"
-        class="fa-solid fa-star"
-      ></i>
-      <i
-        v-if="this.voteToFive"
-        v-for="emptyStar in this.voteToFive"
-        :key="emptyStar"
-        class="fa-regular fa-star"
-      ></i>
+      <ul class="description">
+        <li>
+          <span> Titolo: </span>
+          {{ this.title }}
+        </li>
+        <li>
+          <span> Titolo originale: </span>
+          {{ this.originalTitle }}
+        </li>
+        <li>
+          <span> Lingua: </span>
+          <img
+            class="flag"
+            v-if="hasFlag"
+            :src="flagSrc"
+            :alt="item.original_language"
+          />
+          <div v-else>{{ item.original_language }}</div>
+        </li>
+        <li>
+          <span> Voto: </span>
+          <i
+            v-if="this.roundVote"
+            v-for="fullStar in this.roundVote"
+            :key="fullStar"
+            class="fa-solid fa-star"
+          ></i>
+          <i
+            v-if="this.voteToFive"
+            v-for="emptyStar in this.voteToFive"
+            :key="emptyStar"
+            class="fa-regular fa-star"
+          ></i>
+        </li>
+        <li v-if="item.overview">
+          <span>Overview:</span>
+          {{ item.overview }}
+        </li>
+      </ul>
     </li>
   </ul>
 </template>
@@ -74,14 +88,39 @@ export default {
 <style scoped lang="scss">
 ul {
   list-style-type: none;
-  li {
-    .flag {
-      height: 14px;
-      width: 20px;
-    }
+  .poster {
+    height: 513px;
     .logo {
-      height: 513px;
+      width: 342px;
+      height: 100%;
+    }
+
+    .description {
+      background-color: rgba(54, 54, 54, 0.555);
+      display: none;
+      font-size: 20px;
+      color: rgb(119, 119, 119);
+      padding: 20px;
+      span {
+        color: white;
+      }
+
+      .flag {
+        height: 20px;
+        width: 30px;
+      }
     }
   }
+  .poster:hover .logo {
+    display: none;
+  }
+  .poster:hover .description {
+    display: block;
+    width: 342px;
+    height: 513px;
+  }
+}
+.fa-star {
+  color: yellow;
 }
 </style>
