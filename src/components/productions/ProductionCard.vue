@@ -98,10 +98,11 @@ ul {
     .description {
       background-color: rgba(54, 54, 54, 0.555);
       display: none;
-      font-size: 20px;
+      font-size: 16px;
       color: rgb(119, 119, 119);
       padding: 20px;
       span {
+        font-size: 18px;
         color: white;
       }
 
