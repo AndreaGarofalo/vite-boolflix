@@ -26,14 +26,22 @@ export default {
       const imageUrl = `https://image.tmdb.org/t/p/w342${this.item.poster_path}`;
       return imageUrl;
     },
+    roundVote() {
+      const vote = Math.round(Math.round(this.item.vote_average) / 2);
+      return vote;
+    },
+    voteToFive() {
+      const voteToFive = 5 - this.roundVote;
+      return voteToFive;
+    },
   },
 };
 </script>
 
 <template>
-  <ul>
+  <ul v-if="this.item.poster_path">
     <li>
-      <img :src="buildImageUrl" :alt="this.title" />
+      <img class="logo" :src="buildImageUrl" :alt="this.title" />
     </li>
     <li>{{ this.title }}</li>
     <li>{{ this.originalTitle }}</li>
@@ -46,7 +54,20 @@ export default {
       />
       <div v-else>{{ item.original_language }}</div>
     </li>
-    <li>{{ item.vote_average }}</li>
+    <li>
+      <i
+        v-if="this.roundVote"
+        v-for="fullStar in this.roundVote"
+        :key="fullStar"
+        class="fa-solid fa-star"
+      ></i>
+      <i
+        v-if="this.voteToFive"
+        v-for="emptyStar in this.voteToFive"
+        :key="emptyStar"
+        class="fa-regular fa-star"
+      ></i>
+    </li>
   </ul>
 </template>
 
@@ -57,6 +78,9 @@ ul {
     .flag {
       height: 14px;
       width: 20px;
+    }
+    .logo {
+      height: 513px;
     }
   }
 }

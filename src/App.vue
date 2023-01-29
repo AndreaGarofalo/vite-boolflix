@@ -1,5 +1,4 @@
 <script>
-import { api } from "./data";
 import { store } from "./data/store";
 import AppHeader from "./components/AppHeader.vue";
 import AppMain from "./components/AppMain.vue";
