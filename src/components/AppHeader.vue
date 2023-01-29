@@ -1,6 +1,48 @@
 <script>
+import axios from "axios";
+import SearchBar from "./SearchBar.vue";
+import { api } from "../data";
+import { store } from "../data/store";
 export default {
   name: "Boolflix Header",
+  components: { SearchBar },
+  data: () => ({ store, titleFilter: "" }),
+  computed: {
+    axiosConfig() {
+      const { key, language } = api;
+      return {
+        params: {
+          language,
+          api_key: key,
+          query: this.titleFilter,
+        },
+      };
+    },
+  },
+  methods: {
+    updateTitleFilter(term) {
+      this.titleFilter = term;
+    },
+    searchProductions() {
+      if (!this.titleFilter) {
+        store.movies = [];
+        store.series = [];
+        return;
+      }
+      this.fetchApi("search/movie", "movies");
+      this.fetchApi("search/tv", "series");
+    },
+    fetchApi(endpoint, collection) {
+      axios
+        .get(`${api.baseUri}/${endpoint}`, this.axiosConfig)
+        .then((res) => {
+          store[collection] = res.data.results;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
 };
 </script>
 
@@ -8,11 +50,12 @@ export default {
   <header>
     <div class="container">
       <div class="header-content">
-        <h2>Boolflix</h2>
-        <div class="searchbar">
-          <input type="text" />
-          <button class="text-light">Cerca</button>
-        </div>
+        <h2>BOOLFLIX</h2>
+        <SearchBar
+          @term-change="updateTitleFilter"
+          placeholder="Cerca un film"
+          @form-submit="searchProductions"
+        />
       </div>
     </div>
   </header>
@@ -35,9 +78,6 @@ header {
       justify-content: space-between;
       h2 {
         color: red;
-      }
-      button {
-        background-color: red;
       }
     }
   }
