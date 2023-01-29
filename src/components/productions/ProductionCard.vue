@@ -22,16 +22,28 @@ export default {
       );
       return url.href;
     },
+    buildImageUrl() {
+      const imageUrl = `https://image.tmdb.org/t/p/w342${this.item.poster_path}`;
+      return imageUrl;
+    },
   },
 };
 </script>
 
 <template>
   <ul>
-    <li>{{ item.title || item.name }}</li>
-    <li>{{ item.original_title || item.original_name }}</li>
     <li>
-      <img v-if="hasFlag" :src="flagSrc" :alt="item.original_language" />
+      <img :src="buildImageUrl" :alt="this.title" />
+    </li>
+    <li>{{ this.title }}</li>
+    <li>{{ this.originalTitle }}</li>
+    <li>
+      <img
+        class="flag"
+        v-if="hasFlag"
+        :src="flagSrc"
+        :alt="item.original_language"
+      />
       <div v-else>{{ item.original_language }}</div>
     </li>
     <li>{{ item.vote_average }}</li>
@@ -42,7 +54,7 @@ export default {
 ul {
   list-style-type: none;
   li {
-    img {
+    .flag {
       height: 14px;
       width: 20px;
     }
